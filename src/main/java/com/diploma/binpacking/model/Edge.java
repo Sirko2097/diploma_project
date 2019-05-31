@@ -28,6 +28,7 @@ public class Edge {
         return length;
     }
 
+
     // Визначення сусідніх вершин
     public int getNeighbourIndex(int nodeIndex) {
         if (this.fromNodeIndex == nodeIndex) {

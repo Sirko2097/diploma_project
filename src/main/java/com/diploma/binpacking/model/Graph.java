@@ -12,9 +12,13 @@ public class Graph {
     private int noOfNodes;
     private Edge[] edges;
     private int noOfEdges;
+    private String startNode;
+    private String endNode;
 
-    public Graph(Edge[] edges) {
+    public Graph(Edge[] edges, String startNode, String endNode) {
         this.edges = edges;
+        this.startNode = startNode;
+        this.endNode = endNode;
         // create all nodes ready to be updated with the edges
         this.noOfNodes = calculateNoOfNodes(edges);
         this.nodes = new Node[this.noOfNodes];
@@ -26,6 +30,12 @@ public class Graph {
         for (int edgeToAdd = 0; edgeToAdd < this.noOfEdges; edgeToAdd++) {
             this.nodes[edges[edgeToAdd].getFromNodeIndex()].getEdges().add(edges[edgeToAdd]);
             this.nodes[edges[edgeToAdd].getToNodeIndex()].getEdges().add(edges[edgeToAdd]);
+        }
+
+
+        String[] cities = {"Kyiv", "Polyana", "Vinnytsia", "Myrhorod", "Yaremche", "Lviv", "Poltava", "Kherson"};
+        for (int i = 0; i < this.nodes.length; i++) {
+            this.nodes[i].setName(cities[i]);
         }
     }
 
@@ -46,8 +56,15 @@ public class Graph {
      */
     public void calculateShortestDistances() {
         //Початкова вершина - 0
-        this.nodes[0].setDistanceFromSource(0);
         int nextNode = 0;
+        for (int i = 0; i < this.nodes.length; i++) {
+            if (this.nodes[i].getName().equals(this.startNode)) {
+                this.nodes[i].setDistanceFromSource(i);
+                nextNode = i;
+            }
+
+        }
+
 
         // Проходимо по всім вершинам
         for (int i = 0; i < this.nodes.length; i++) {
@@ -55,12 +72,12 @@ public class Graph {
             // Перевіряємо всі ребра, які виходять з цієї вершини
             ArrayList<Edge> currentNodeEdges = this.nodes[nextNode].getEdges();
 
-            for (int joinedEdge = 0; joinedEdge < currentNodeEdges.size(); joinedEdge++) {
-                int neighbourIndex = currentNodeEdges.get(joinedEdge).getNeighbourIndex(nextNode);
+            for (Edge currentNodeEdge : currentNodeEdges) {
+                int neighbourIndex = currentNodeEdge.getNeighbourIndex(nextNode);
 
                 // ідемо на ту вершину, де ще не були
                 if (!this.nodes[neighbourIndex].isVisited()) {
-                    int tentative = this.nodes[nextNode].getDistanceFromSource() + currentNodeEdges.get(joinedEdge).getLength();
+                    int tentative = this.nodes[nextNode].getDistanceFromSource() + currentNodeEdge.getLength();
                     if (tentative < nodes[neighbourIndex].getDistanceFromSource()) {
                         nodes[neighbourIndex].setDistanceFromSource(tentative);
                     }
@@ -96,12 +113,16 @@ public class Graph {
      */
     public String printResult() {
         System.out.println();
-
+        Node node = new Node();
         String output = "Number of nodes = " + this.noOfNodes;
         output += "\nNumber of edges = " + this.noOfEdges;
-        for (int i = 0; i < this.nodes.length; i++) {
-            output += ("\nThe shortest distance from node 0 to node " + i + " is " + nodes[i].getDistanceFromSource());
+        for (Node value : this.nodes) {
+            if (value.getName().equals(endNode)) {
+                node = value;
+                break;
+            }
         }
+        output += ("\nThe shortest distance from node " + this.startNode + " to node " +node.getName() + " is " + node.getDistanceFromSource());
         return output;
     }
 

@@ -10,7 +10,16 @@ public class Node {
 
     private int distanceFromSource = Integer.MAX_VALUE;
     private boolean visited;
+    private String name;
     private ArrayList<Edge> edges = new ArrayList<>();
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public int getDistanceFromSource() {
         return distanceFromSource;
