@@ -126,6 +126,17 @@ public class Graph {
         return output;
     }
 
+    public String getResultWay() {
+        Node node = new Node();
+        for (Node value : this.nodes) {
+            if (value.getName().equals(endNode)) {
+                node = value;
+                break;
+            }
+        }
+        return String.valueOf(node.getDistanceFromSource());
+    }
+
     public Node[] getNodes() {
         return nodes;
     }

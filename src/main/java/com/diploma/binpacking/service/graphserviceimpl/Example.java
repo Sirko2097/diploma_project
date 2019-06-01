@@ -26,11 +26,6 @@ public class Example {
         };
         Graph g = new Graph(edges, startNode, endNode);
         g.calculateShortestDistances();
-        int i = 0;
-        for (Edge edge : edges) {
-            i++;
-            System.out.println(i + ") " + edge.getFromNodeIndex() + " -> " + edge.getToNodeIndex());
-        }
-        return (g.printResult());
+        return (g.getResultWay());
     }
 }
